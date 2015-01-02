@@ -115,7 +115,7 @@ class CachedEditDistance(object):
         l = cache + [list(self.list_for_copy) for _ in range(len(iwords) - spos)]
         # 先頭はキャッシュなので飛ばす。iwordsはsposから、lは1から計算
         assert len(l) - 1 == len(iwords) - spos
-        for i, j in itrt.product(list(range(1, len(iwords) - spos + 1)), list(range(len(self.rwds) + 1))):
+        for i, j in itertools.product(list(range(1, len(iwords) - spos + 1)), list(range(len(self.rwds) + 1))):
             if j == 0:
                 l[i][j] = l[i - 1][j] + 1
             else:
