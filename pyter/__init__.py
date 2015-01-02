@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 """ Copyright (c) 2011 Hiroyuki Tanaka. All rights reserved."""
-import itertools as itrt
+import itertools
 from pyter import util
 
 
@@ -56,13 +56,13 @@ def _findpairs(ws1, ws2):
     """ yield the tuple of (ws1_start_point, ws2_start_point, length)
     So ws1[ws1_start_point:ws1_start_point+length] == ws2[ws2_start_point:ws2_start_point+length]
     """
-    for i1, i2 in itrt.product(list(range(len(ws1))), list(range(len(ws2)))):
+    for i1, i2 in itertools.product(list(range(len(ws1))), list(range(len(ws2)))):
         if i1 == i2:
             continue  # take away if there is already in the same position
         if ws1[i1] == ws2[i2]:
             # counting
             length = 1
-            for j1, j2 in itrt.izip(list(range(i1 + 1, len(ws1))), list(range(i2 + 1, len(ws2)))):
+            for j1, j2 in zip(list(range(i1 + 1, len(ws1))), list(range(i2 + 1, len(ws2)))):
                 if ws1[j1] == ws2[j2]:
                     length += 1
                 else:
@@ -80,7 +80,7 @@ def edit_distance(s, t):
     l[0] = [x for x, _ in enumerate(l[0])]
     for x, y in enumerate(l):
         y[0] = x
-    for i, j in itrt.product(list(range(1, len(s) + 1)), list(range(1, len(t) + 1))):
+    for i, j in itertools.product(list(range(1, len(s) + 1)), list(range(1, len(t) + 1))):
         l[i][j] = min(l[i - 1][j] + 1,
                       l[i][j - 1] + 1,
                       l[i - 1][j - 1] + (0 if s[i - 1] == t[j - 1] else 1))
@@ -130,7 +130,7 @@ class CachedEditDistance(object):
         for i in range(skipnum):
             node = node[iwords[i]][0]
         assert len(iwords[skipnum:]) == len(mat)
-        for word, row in itrt.izip(iwords[skipnum:], mat):
+        for word, row in zip(iwords[skipnum:], mat):
             if word not in node:
                 node[word] = [{}, None]
             value = node[word]
@@ -168,7 +168,6 @@ def parse_args():
 def main():
     import codecs
     import sys
-    import itertools
     import math
     args = parse_args()
     ilines = [util.preprocess(x, args.lang) for x in codecs.open(args.input, 'r', 'utf-8').readlines()]
